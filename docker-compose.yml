@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+#  elasticsearch:
+#    image: elasticsearch:2.4.5-alpine
+#    ports:
+#     - 9200:9200
+#     - 9300:9300
+
+  postgresql:
+    image: "postgres:alpine"
+    container_name: "postgresql"
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "p@ssw0rd"
+      POSTGRES_DB: "backend_db"
+    volumes:
+      - database-repository:/var/lib/postgresql/repository # persist repository locally even if container shuts down
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+
+
+  shoppingcart:
+    image: "shoppingcart"
+    build:
+      context: .
+      dockerfile: Shoppingcart\Dockerfile
+    ports:
+      - "8083:8083"
+
+volumes:
+  database-repository: # database named volume
