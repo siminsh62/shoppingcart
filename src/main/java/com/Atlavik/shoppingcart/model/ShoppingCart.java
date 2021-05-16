@@ -19,7 +19,6 @@ public class ShoppingCart implements Serializable {
     private Long id;
     private String countryCode;
     private String currency;
-
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Simin
  * @created 11/05/2021 - 10:59 PM
@@ -13,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-    @Autowired
-   // private  ProductService productService;
+
     private final ProductService productService;
 
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -27,7 +29,19 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @DeleteMapping(path = "/product/{id}")
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> getProducts() {
+        return productService.getProducts();
+    }
+
+    @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getProductByID(id);
+    }
+
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);

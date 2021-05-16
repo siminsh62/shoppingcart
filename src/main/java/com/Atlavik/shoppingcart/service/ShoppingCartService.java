@@ -12,16 +12,17 @@ import java.util.List;
 public interface ShoppingCartService {
     ShoppingCart createShoppingCart(ShoppingCart shoppingCart);
 
-    ShoppingCart getShoppingCart(Long id);
+    ShoppingCart getShoppingCart(Long cartId);
 
-    ShoppingCart updateShoppingCart(Long id, List<Product> product);
+    ShoppingCart updateShoppingCart(Long cartId, List<Product> products);
 
     List<ShoppingCart> getAll();
 
-    void deleteShoppingCart(Long id);
+    void deleteShoppingCart(Long cartId);
 
+    Product getShoppingCartProduct(Long cartId, Long productId);
 
-    Product getShoppingCartProducts(Long id, Long productId);
+    List<Product> getShoppingCartProducts(Long cartId);
 
     ShoppingCart deleteProductFromShoppingCart(Long cartId, Long productId);
 }

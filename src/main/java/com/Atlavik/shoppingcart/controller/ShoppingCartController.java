@@ -17,11 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class ShoppingCartController {
-    private final ShoppingCartService cartService;
-//
-//    @Autowired
-//    private ShoppingCartService cartService;
 
+    private final ShoppingCartService cartService;
+
+    @Autowired
     public ShoppingCartController(ShoppingCartService cartService) {
         this.cartService = cartService;
     }
@@ -39,22 +38,22 @@ public class ShoppingCartController {
     }
 
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{cartId}")
     @ResponseStatus(HttpStatus.OK)
-    public ShoppingCart getShoppingCart(@PathVariable Long id) {
-        return cartService.getShoppingCart(id);
+    public ShoppingCart getShoppingCart(@PathVariable Long cartId) {
+        return cartService.getShoppingCart(cartId);
     }
 
     @GetMapping(path = "/{cartId}/product/{productId}")
     @ResponseStatus(HttpStatus.OK)
-    public Product getShoppingCartProducts(@PathVariable Long cartId, @PathVariable Long productId) {
-        return cartService.getShoppingCartProducts(cartId, productId);
+    public Product getShoppingCartProduct(@PathVariable Long cartId, @PathVariable Long productId) {
+        return cartService.getShoppingCartProduct(cartId, productId);
     }
 
-    @PutMapping(path = "/{id}/product")
+    @PutMapping(path = "/{cartId}/product")
     @ResponseStatus(HttpStatus.OK)
-    public ShoppingCart updateShoppingCart(@PathVariable Long id, @RequestBody List<Product> product) {
-        return cartService.updateShoppingCart(id, product);
+    public ShoppingCart updateShoppingCart(@PathVariable Long cartId, @RequestBody List<Product> products) {
+        return cartService.updateShoppingCart(cartId, products);
     }
 
     @DeleteMapping(path = "/{cartId}/product/{productId}")
@@ -63,10 +62,9 @@ public class ShoppingCartController {
         return cartService.deleteProductFromShoppingCart(cartId, productId);
     }
 
-
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/{cartId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteShoppingCart(@PathVariable Long id) {
-        cartService.deleteShoppingCart(id);
+    public void deleteShoppingCart(@PathVariable Long cartId) {
+        cartService.deleteShoppingCart(cartId);
     }
 }
