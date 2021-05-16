@@ -116,13 +116,13 @@ Product:
 
 ```json
       {
-          "productId":"1135621-5605-4d75-8317-db282c498c7f",
+           "productId":"1135621-5605-4d75-8317-db282c498c7f",
            "description":"Apple iphone 12",
            "category":"ELECTRONICS",
            "price":7325.05,
            "created":"2021-05-07T20:30:00",
            "updated":"2021-08-07T20:30:00"
-       }
+      }
    
 
 ```
@@ -145,24 +145,24 @@ Product:
        "countryCode": "US",
        "currency": "USD",
        "products":
-          [
-           {
-            "id": 1,
-            "productId": "1135621-5605-4d75-8317-db282c498c7f",
-            "description": "Apple iphone 12",
-            "category": "ELECTRONICS",
-            "price": 7325.05,
-            "created": "2021-05-07T20:30:00",
-            "updated": "2021-08-07T20:30:00"
-          }
-        ],
+                  [
+                     {
+                      "id": 1,
+                      "productId": "1135621-5605-4d75-8317-db282c498c7f",
+                      "description": "Apple iphone 12",
+                      "category": "ELECTRONICS",
+                      "price": 7325.05,
+                      "created": "2021-05-07T20:30:00",
+                      "updated": "2021-08-07T20:30:00"
+                    }
+                 ]          ,
       "created": "2021-05-07T20:30:00",
       "updated": "2021-08-07T20:30:00"
     }
 ```
 4.Get product by Id from shopping cart: http://localhost:8080/api/1/product/1
 ```json
-           {
+          {
             "id": 1,
             "productId": "1135621-5605-4d75-8317-db282c498c7f",
             "description": "Apple iphone 12",
@@ -182,7 +182,7 @@ Product:
             "products": [],
             "created": "2021-05-07T20:30:00",
             "updated": "2021-08-07T20:30:00"
-     }
+         }
         
 ```
 Test coverage
