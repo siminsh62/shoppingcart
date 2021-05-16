@@ -67,9 +67,9 @@ class ProductServiceImplTest {
 
     @Test
     void deleteProduct() {
-
-        productRep.deleteById(getProductAgain());
-        assertEquals(productRep.findById(7L), Optional.empty());
+       Long proId= getProductAgain();
+        productRep.deleteById(proId);
+        assertEquals(productRep.findById(proId), Optional.empty());
     }
 
     @Test
