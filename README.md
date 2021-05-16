@@ -187,8 +187,6 @@ Product:
 ```
 Test coverage
 
-![](https://github.com/siminsh62/shoppingcart/
-coverage2.png)
+![](https://github.com/siminsh62/shoppingcart/coverage2.png)
 
-![](https://github.com/siminsh62/shoppingcart/
-coverage1.png)
+![](https://github.com/siminsh62/shoppingcart/coverage1.png)
