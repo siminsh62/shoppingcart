@@ -38,6 +38,38 @@ Below is the sample payload for a shopping cart.
 - Swagger 
 - Travis CI 
 ```
+## How to run
+Build
+```
+mvn clean install 
+```
+Docker
+```
+docker-compose up 
+```
+Docker
+```
+docker-compose up 
+```
+Run 
+specify environment variables:DATABASE=localhost in Edit configuration
+```
+spring boot run 
+```
+Travis CI 
+The Travis CI environment contains various versions of OpenJDK, Gradle, Maven and Ant.
+To use the Java environment, add the following to your.travis.yml in root
+```
+mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+mvn test -B
+```
+git
+```
+git add .
+git commit -m "first commit"
+git push origin main
+```
+
 - You can use postman (https://www.postman.com/) tool to call endpoints
 
 ## List of endpoints:
@@ -156,3 +188,10 @@ Product:
      }
         
 ```
+Test coverage
+
+![](https://github.com/siminsh62/shoppingcart/
+coverage2.png)
+
+![](https://github.com/siminsh62/shoppingcart/
+coverage1.png)
