@@ -8,14 +8,10 @@ import com.Atlavik.shoppingcart.repository.ShoppingCartRep;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -174,7 +170,7 @@ class ShoppingCartServiceImplTest {
         ShoppingCart shoppingCart = shoppingCartRep
                 .findById(cartId)
                 .orElseThrow(() -> new ElementNotFoundException("Could not find with ID provided"));
-        shoppingCart.getProducts().removeIf(x -> x.getId() == productId);
+        shoppingCart.getProducts().removeIf(x -> x.getId().equals(productId));
         assertNotNull(shoppingCartRep.save(shoppingCart));
 
     }

@@ -3,23 +3,10 @@ package com.Atlavik.shoppingcart.controller;
 import com.Atlavik.shoppingcart.ShoppingcartApplication;
 import com.Atlavik.shoppingcart.model.Product;
 import com.Atlavik.shoppingcart.model.ShoppingCart;
-import com.Atlavik.shoppingcart.repository.ProductRep;
-import com.Atlavik.shoppingcart.service.ProductService;
-import com.Atlavik.shoppingcart.service.impl.ProductServiceImpl;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.jupiter.api.MethodOrderer;
@@ -27,11 +14,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -268,7 +253,9 @@ class ShoppingCartControllerTest {
         Long cartId = createShoppingCartAgain(productId1);
 
         String uri = "/api/" + cartId + "/product/" + productId1;
-        //String uri = "/api/17/product/21";
+
+        System.out.println(uri);
+
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 

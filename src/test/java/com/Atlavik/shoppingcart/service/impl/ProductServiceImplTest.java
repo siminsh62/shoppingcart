@@ -2,7 +2,6 @@ package com.Atlavik.shoppingcart.service.impl;
 
 import com.Atlavik.shoppingcart.exception.ElementNotFoundException;
 import com.Atlavik.shoppingcart.model.Product;
-import com.Atlavik.shoppingcart.model.ShoppingCart;
 import com.Atlavik.shoppingcart.repository.ProductRep;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

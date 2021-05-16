@@ -5,13 +5,11 @@ import com.Atlavik.shoppingcart.exception.ElementNotFoundException;
 import com.Atlavik.shoppingcart.model.Product;
 import com.Atlavik.shoppingcart.model.ShoppingCart;
 import com.Atlavik.shoppingcart.repository.ShoppingCartRep;
-import com.Atlavik.shoppingcart.service.ProductService;
 import com.Atlavik.shoppingcart.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -105,7 +103,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public Product getShoppingCartProduct(Long cartId, Long productId) {
         List<Product> Products = getShoppingCart(cartId).getProducts()
                 .stream()
-                .filter(x -> x.getId() == productId)
+                .filter(x -> x.getId().equals(productId))
                 .collect(Collectors.toList());
         return Products.get(0);
     }
@@ -134,7 +132,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart deleteProductFromShoppingCart(Long cartId, Long productId) {
         ShoppingCart cart = getShoppingCart(cartId);
-        cart.getProducts().removeIf(x -> x.getId() == productId);
+        cart.getProducts().removeIf(x -> x.getId().equals(productId));
         return cartRep.save(cart);
     }
 
