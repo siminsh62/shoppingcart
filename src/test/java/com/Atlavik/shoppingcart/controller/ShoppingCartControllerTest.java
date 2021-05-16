@@ -3,6 +3,9 @@ package com.Atlavik.shoppingcart.controller;
 import com.Atlavik.shoppingcart.ShoppingcartApplication;
 import com.Atlavik.shoppingcart.model.Product;
 import com.Atlavik.shoppingcart.model.ShoppingCart;
+import com.Atlavik.shoppingcart.repository.ProductRep;
+import com.Atlavik.shoppingcart.service.ProductService;
+import com.Atlavik.shoppingcart.service.impl.ProductServiceImpl;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -19,11 +22,16 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -53,18 +61,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = ShoppingcartApplication.class)
 @WebAppConfiguration
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ShoppingCartControllerTest {
 
     @Autowired
     MockMvc mvc;
     @Autowired
     WebApplicationContext webApplicationContext;
-
-    private Long cartId;
-    private Long productId;
-
-    @Autowired
-    private ProductController productController;
 
 
     protected String mapToJson(Object obj) throws JsonProcessingException {
@@ -80,9 +83,9 @@ class ShoppingCartControllerTest {
     }
 
     @Test
+    @Order(1)
     void createShoppingCart() throws Exception {
-        //creat new product
-        productId = creatNewProduct().getId();
+        createProduct();
         String uri = "/api";
         ShoppingCart shoppingCart = new ShoppingCart();
 
@@ -103,7 +106,7 @@ class ShoppingCartControllerTest {
         JSONParser parser = new JSONParser();
         JSONObject json = (JSONObject) parser.parse(content);
 
-        cartId = (Long) json.get("id");
+        Long cartId = (Long) json.get("id");
         String currency = (String) json.get("currency");
         String countryCode = (String) json.get("countryCode");
         // String products = (String) json.get(products);
@@ -121,80 +124,80 @@ class ShoppingCartControllerTest {
     }
 
     //creat New product
-    private Product creatNewProduct() {
+
+
+    Long createProduct() throws Exception {
+
+        String uri = "/product";
         Product product = new Product();
+
         product.setProductId("1135621-5605-4d75-8317-db282c498c7f");
         product.setDescription("Apple iphone 12");
         product.setCategory("ELECTRONICS");
         product.setPrice(BigDecimal.valueOf(7325.05));
         product.setCreated("2021-05-07T20:30:00");
         product.setUpdated("2021-08-07T20:30:00");
-        return productController.createProduct(product);
+
+        String inputJson = mapToJson(product);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(201, status);
+        String content = mvcResult.getResponse().getContentAsString();
+
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(content);
+
+        Long productId = (Long) json.get("id");
+        return productId;
+
     }
 
-
-    @Test
-    void getAllShoppingCart() throws Exception {
-
+    Long createShoppingCartAgain(Long productId) throws Exception {
+      //  Long productId = createProduct();
         String uri = "/api";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        ShoppingCart shoppingCart = new ShoppingCart();
+        List<Product> products = new ArrayList<>();
+
+        Product product1 = new Product();
+        product1.setId(productId);
+        products.add(product1);
+        shoppingCart.setCountryCode("US");
+        shoppingCart.setCurrency("USD");
+        shoppingCart.setProducts(products);
+        shoppingCart.setCreated("2021-05-07T20:30:00");
+        shoppingCart.setUpdated("2021-08-07T20:30:00");
+
+        String inputJson = mapToJson(shoppingCart);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(201, status);
         String content = mvcResult.getResponse().getContentAsString();
-        ShoppingCart[] carts = mapFromJson(content, ShoppingCart[].class);
-        assertTrue(carts.length > 0);
+
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(content);
+
+        Long cartId = (Long) json.get("id");
+        return cartId;
     }
 
     @Test
-    void getShoppingCart() throws Exception {
-        String uri = "/api/5";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        ShoppingCart cart = mapFromJson(content, ShoppingCart.class);
-        assertNotNull(cart);
-    }
-
-
-    @Test
-    void getShoppingCartProduct() throws Exception {
-        //HttpUriRequest request = new HttpGet("http://localhost:8080/api/{cartId}/product/{productId}");
-
-        // String uri = "/api/"+cartId+"/product/11";
-        String uri = "/api/17/product/21";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Product product = mapFromJson(content, Product.class);
-        assertNotNull(product);
-    }
-
-
-    @Test
+    @Order(2)
     void updateShoppingCart() throws Exception {
-        // {cartId}/product"
-        //  String uri = "/api/"+cartId+"/product";
-        String uri = "/api/17/product";
+        Long productId1 = createProduct();
+        Long cartId = createShoppingCartAgain(productId1);
+
+        String uri = "/api/" + cartId + "/product";
+        // String uri = "/api/17/product";
 
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
-        Product product2 = new Product();
-        product1.setId(21L);
-        product2.setId(3L);
+        product1.setId(productId1);
         products.add(product1);
-        products.add(product2);
 
-        //shoppingCart.setProducts(products);
-//        Product product=new Product();
-//        product.setId(10L);
         String inputJson = mapToJson(products);
 
         System.out.println(inputJson);
@@ -225,16 +228,68 @@ class ShoppingCartControllerTest {
     }
 
     @Test
+    @Order(3)
+    void getAllShoppingCart() throws Exception {
+
+        String uri = "/api";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        ShoppingCart[] carts = mapFromJson(content, ShoppingCart[].class);
+        assertTrue(carts.length > 0);
+    }
+
+    @Test
+    @Order(4)
+    void getShoppingCart() throws Exception {
+        Long productId1 = createProduct();
+        Long cartId = createShoppingCartAgain(productId1);
+
+        //String uri = "/api/5";
+        String uri = "/api/" + cartId;
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        ShoppingCart cart = mapFromJson(content, ShoppingCart.class);
+        assertNotNull(cart);
+    }
+
+
+    @Test
+    @Order(5)
+    void getShoppingCartProduct() throws Exception {
+        Long productId1 = createProduct();
+        Long cartId = createShoppingCartAgain(productId1);
+
+        String uri = "/api/" + cartId + "/product/" + productId1;
+        //String uri = "/api/17/product/21";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        Product product = mapFromJson(content, Product.class);
+        assertNotNull(product);
+    }
+
+
+    @Test
+    @Order(6)
     void deleteProductShoppingCart() throws Exception {
-        String uri = "/api/17/product/3";
-        ShoppingCart shoppingCart = new ShoppingCart();
-        List<Product> products = new ArrayList<>();
-//        Product product = new Product();
-//        product.setId(3L);
-//        products.add(product);
-//        shoppingCart.setProducts(products);
-//
-//        String inputJson = mapToJson(products);
+
+        Long productId1 = createProduct();
+        Long cartId = createShoppingCartAgain(productId1);
+
+        // String uri = "/api/17/product/3";
+        String uri = "/api/" + cartId + "/product/" + productId1;
+
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -259,8 +314,12 @@ class ShoppingCartControllerTest {
     }
 
     @Test
+    @Order(7)
     void deleteShoppingCart() throws Exception {
-        String uri = "/api/13";
+
+        Long productId1 = createProduct();
+        Long cartId = createShoppingCartAgain(productId1);
+        String uri = "/api/" + cartId;
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);

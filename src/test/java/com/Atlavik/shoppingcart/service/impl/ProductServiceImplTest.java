@@ -50,21 +50,39 @@ class ProductServiceImplTest {
         assertEquals(newProduct.getUpdated(), "2021-08-07T20:30:00");
     }
 
+
+    private Long getProductAgain() {
+        //creat new Product
+        Product product = new Product();
+        product.setProductId("1135621-5605-4d75-8317-db282c498c7f");
+        product.setDescription("Apple iphone 12");
+        product.setCategory("ELECTRONICS");
+        product.setPrice(BigDecimal.valueOf(7325.05));
+        product.setCreated("2021-05-07T20:30:00");
+        product.setUpdated("2021-08-07T20:30:00");
+
+
+        Product newProduct = productRep.save(product);
+        return newProduct.getId();
+    }
+
     @Test
     void deleteProduct() {
-        productRep.deleteById(6L);
-        assertEquals(productRep.findById(7L),Optional.empty());
+
+        productRep.deleteById(getProductAgain());
+        assertEquals(productRep.findById(7L), Optional.empty());
     }
 
     @Test
     void getProductByID() {
         assertNotNull(productRep
-                .findById(16L)
+                .findById(getProductAgain())
                 .orElseThrow(() -> new ElementNotFoundException("Could not find Product with ID provided")));
     }
 
     @Test
     void getProducts() {
+        getProductAgain();
         assertThat(productRep.findAll()).size().isGreaterThan(0);
     }
 }
