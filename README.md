@@ -71,7 +71,7 @@ git push origin main
 ```
 
 - You can use postman (https://www.postman.com/) tool to call endpoints
-
+- Swagger documentation    http://localhost:8080/api-docs
 ## List of endpoints:
 ```
 Swagger documentation                                  http://localhost:8080/api-docs
