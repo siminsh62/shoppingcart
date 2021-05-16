@@ -27,9 +27,11 @@ services:
     image: "shoppingcart"
     build:
       context: .
-      dockerfile: Shoppingcart\Dockerfile
+      dockerfile: src\Dockerfile
     ports:
-      - "8083:8083"
+      - "8083:8080"
+    environment:
+      - DATABASE=postgresql
 
 volumes:
   database-repository: # database named volume

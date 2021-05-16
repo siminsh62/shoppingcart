@@ -24,7 +24,6 @@ public class Product implements Serializable {
     private String updated;
 
 
-
     public Long getId() {
         return id;
     }

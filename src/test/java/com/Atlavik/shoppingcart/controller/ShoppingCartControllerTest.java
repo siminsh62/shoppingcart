@@ -24,12 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +105,6 @@ class ShoppingCartControllerTest {
 
     //creat New product
 
-
     Long createProduct() throws Exception {
 
         String uri = "/product";
@@ -140,7 +134,7 @@ class ShoppingCartControllerTest {
     }
 
     Long createShoppingCartAgain(Long productId) throws Exception {
-      //  Long productId = createProduct();
+
         String uri = "/api";
         ShoppingCart shoppingCart = new ShoppingCart();
         List<Product> products = new ArrayList<>();
@@ -176,7 +170,6 @@ class ShoppingCartControllerTest {
         Long cartId = createShoppingCartAgain(productId1);
 
         String uri = "/api/" + cartId + "/product";
-        // String uri = "/api/17/product";
 
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
@@ -233,7 +226,6 @@ class ShoppingCartControllerTest {
         Long productId1 = createProduct();
         Long cartId = createShoppingCartAgain(productId1);
 
-        //String uri = "/api/5";
         String uri = "/api/" + cartId;
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
@@ -254,8 +246,6 @@ class ShoppingCartControllerTest {
 
         String uri = "/api/" + cartId + "/product/" + productId1;
 
-        System.out.println(uri);
-
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -265,7 +255,6 @@ class ShoppingCartControllerTest {
         Product product = mapFromJson(content, Product.class);
         assertNotNull(product);
     }
-
 
     @Test
     @Order(6)
@@ -311,4 +300,6 @@ class ShoppingCartControllerTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
     }
+
+
 }

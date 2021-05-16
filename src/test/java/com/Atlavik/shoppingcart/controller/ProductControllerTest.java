@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -38,7 +39,6 @@ class ProductControllerTest {
     MockMvc mvc;
     @Autowired
     WebApplicationContext webApplicationContext;
-
 
 
     //    protected void setUp() {
@@ -153,7 +153,7 @@ class ProductControllerTest {
     @Test
     void getProductByID() throws Exception {
         Long proId = createProductAgain();
-        String uri = "/product/"+proId;
+        String uri = "/product/" + proId;
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
