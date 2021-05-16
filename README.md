@@ -39,31 +39,28 @@ Below is the sample payload for a shopping cart.
 - Travis CI 
 ```
 ## How to run
-Build
+####Build
 ```
 mvn clean install 
 ```
-Docker
+####Docker
 ```
 docker-compose up 
 ```
-Docker
-```
-docker-compose up 
-```
-Run 
-specify environment variables:DATABASE=localhost in Edit configuration
+####Run 
+-specify environment variables:DATABASE=localhost in Application Edit configuration
+(and for Test Application)
 ```
 spring boot run 
 ```
-Travis CI 
+####Travis CI 
 The Travis CI environment contains various versions of OpenJDK, Gradle, Maven and Ant.
 To use the Java environment, add the following to your.travis.yml in root
 ```
 mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 mvn test -B
 ```
-git
+####git
 ```
 git add .
 git commit -m "first commit"
