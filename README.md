@@ -187,6 +187,6 @@ Product:
 ```
 Test coverage
 
--![ ]( images/coverage2.png )
+-![ ]( /blob/main/images/coverage1.jpg )
 -![ ]( images/coverage1.png )
 
