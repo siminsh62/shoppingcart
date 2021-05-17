@@ -39,6 +39,11 @@ Below is the sample payload for a shopping cart.
 - Travis CI 
 ```
 ## How to run
+
+git
+```
+git clone https://github.com/siminsh62/shoppingcart
+```
 Build
 ```
 mvn clean install 
@@ -61,12 +66,6 @@ To use the Java environment, add the following to your.travis.yml in root
 ```
 mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 mvn test -B
-```
-git
-```
-git add .
-git commit -m "first commit"
-git push origin main
 ```
 
 - You can use postman (https://www.postman.com/) tool to call endpoints
